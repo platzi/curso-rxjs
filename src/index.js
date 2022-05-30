@@ -1,16 +1,31 @@
 /**
- * Observables: fromEvent
- * El método fromEvent nos permite generar observables que capturan eventos del DOM.
- * https://rxjs.dev/api/index/function/fromEvent
+ * Observables: Subject
+ * https://rxjs.dev/guide/subject
  */
-import { fromEvent } from "rxjs";
+import { Observable, Subject } from "rxjs";
 
-const onKeyDown$ = fromEvent(document, "keydown");
+const numbers$ = new Observable((subscriber) => {
+  // Podemos enviar una función (como Math.random) que generará el mismo dato en observador1 y observador2.
+  subscriber.next(Math.round(Math.random() * 100));
+});
 
-const observadorMouse = {
-  next: (event) => {
-    console.log(event.key);
+const numbersRandom$ = new Subject();
+
+const observador1 = {
+  next: (number) => {
+    console.log(number);
   },
 };
 
-onKeyDown$.subscribe(observadorMouse);
+const observador2 = {
+  next: (number) => {
+    console.log(number);
+  },
+};
+
+numbersRandom$.subscribe(observador1);
+numbersRandom$.subscribe(observador2);
+numbers$.subscribe(numbersRandom$);
+
+// También podemos enviar valores fuera del observable Subject.
+numbersRandom$.next(45);
