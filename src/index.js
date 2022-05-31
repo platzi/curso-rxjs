@@ -1,16 +1,36 @@
 /**
- * Operadores: map, reduce y filter
- * https://rxjs.dev/api/index/function/map
- * https://rxjs.dev/api/index/function/reduce
- * https://rxjs.dev/api/index/function/filter
+ * Operadores: distinct, distinctUntilChanged y distinctUntilKeyChanged
+ * https://rxjs.dev/api/operators/distinct
+ * https://rxjs.dev/api/operators/distinctUntilChanged
+ * https://rxjs.dev/api/operators/distinctUntilKeyChanged
  */
 
-import { from } from "rxjs";
-import { map, reduce, filter } from "rxjs/operators";
+import { of } from "rxjs";
+import {
+  distinct,
+  distinctUntilChanged,
+  distinctUntilKeyChanged,
+} from "rxjs/operators";
 
-const numbers$ = from([1, 2, 3, 4, 5, 6, 7, 8]).pipe(
-  // map((value) => value * 2),
-  // filter((value) => value % 2 !== 0),
-  reduce((accumulated, value) => accumulated + value, 10)
+// distinct
+const repeatedNumbers$ = of(1, 2, 1, 3, 4, 4, 2, 1).pipe(distinct());
+repeatedNumbers$.subscribe(console.log);
+
+// distinctUntilChanged
+const repeatedNumbersChanged$ = of(1, 2, 1, 3, 4, 4, 2).pipe(
+  distinctUntilChanged()
 );
-numbers$.subscribe(console.log);
+repeatedNumbersChanged$.subscribe(console.log);
+
+// distinctUntilKeyChanged
+const repeatedNumbersKeyChanged$ = of(
+  { k: 1 },
+  { k: 2 },
+  { k: 1 },
+  { k: 3 },
+  { k: 4 },
+  { k: 4 },
+  { k: 2 },
+  { k: 1 }
+).pipe(distinctUntilKeyChanged("k"));
+repeatedNumbersKeyChanged$.subscribe(console.log);
