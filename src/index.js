@@ -1,31 +1,16 @@
 /**
- * Observables: Subject
- * https://rxjs.dev/guide/subject
+ * Observables: from y of
+ * https://rxjs.dev/api/index/function/from
+ * https://rxjs.dev/api/index/function/of
  */
-import { Observable, Subject } from "rxjs";
+import { from, of, asyncScheduler } from "rxjs";
 
-const numbers$ = new Observable((subscriber) => {
-  // Podemos enviar una función (como Math.random) que generará el mismo dato en observador1 y observador2.
-  subscriber.next(Math.round(Math.random() * 100));
-});
+// of genera un observable a partir de sus argumentos.
+const vegetables$ = of("from", "eggplant", "onion", "corn");
 
-const numbersRandom$ = new Subject();
+// from genera un observable a partir de un arreglo de elementos.
+// Scheduler *como argumento* en from() será obsoleto después de la RxJS v8.
+const fruits$ = from(["apple", "tangerine", "pear", "banana"], asyncScheduler);
 
-const observador1 = {
-  next: (number) => {
-    console.log(number);
-  },
-};
-
-const observador2 = {
-  next: (number) => {
-    console.log(number);
-  },
-};
-
-numbersRandom$.subscribe(observador1);
-numbersRandom$.subscribe(observador2);
-numbers$.subscribe(numbersRandom$);
-
-// También podemos enviar valores fuera del observable Subject.
-numbersRandom$.next(45);
+vegetables$.subscribe(console.log);
+fruits$.subscribe(console.log);
