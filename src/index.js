@@ -1,12 +1,16 @@
 /**
- * Observables: interval y timer
- * https://rxjs.dev/api/index/function/interval
- * https://rxjs.dev/api/index/function/timer
+ * Operadores: map, reduce y filter
+ * https://rxjs.dev/api/index/function/map
+ * https://rxjs.dev/api/index/function/reduce
+ * https://rxjs.dev/api/index/function/filter
  */
-import { interval, timer } from "rxjs";
 
-const sequenceNumbers$ = interval(200); // Emite valores numéricos cada 200 milisegundos.
-const delayedTimer$ = timer(5000); // Retrasa un valor numérico por 5000 milisegundos.
+import { from } from "rxjs";
+import { map, reduce, filter } from "rxjs/operators";
 
-sequenceNumbers$.subscribe(console.log);
-delayedTimer$.subscribe(console.log);
+const numbers$ = from([1, 2, 3, 4, 5, 6, 7, 8]).pipe(
+  // map((value) => value * 2),
+  // filter((value) => value % 2 !== 0),
+  reduce((accumulated, value) => accumulated + value, 10)
+);
+numbers$.subscribe(console.log);
