@@ -1,16 +1,12 @@
 /**
- * Observables: from y of
- * https://rxjs.dev/api/index/function/from
- * https://rxjs.dev/api/index/function/of
+ * Observables: interval y timer
+ * https://rxjs.dev/api/index/function/interval
+ * https://rxjs.dev/api/index/function/timer
  */
-import { from, of, asyncScheduler } from "rxjs";
+import { interval, timer } from "rxjs";
 
-// of genera un observable a partir de sus argumentos.
-const vegetables$ = of("from", "eggplant", "onion", "corn");
+const sequenceNumbers$ = interval(200); // Emite valores numéricos cada 200 milisegundos.
+const delayedTimer$ = timer(5000); // Retrasa un valor numérico por 5000 milisegundos.
 
-// from genera un observable a partir de un arreglo de elementos.
-// Scheduler *como argumento* en from() será obsoleto después de la RxJS v8.
-const fruits$ = from(["apple", "tangerine", "pear", "banana"], asyncScheduler);
-
-vegetables$.subscribe(console.log);
-fruits$.subscribe(console.log);
+sequenceNumbers$.subscribe(console.log);
+delayedTimer$.subscribe(console.log);
