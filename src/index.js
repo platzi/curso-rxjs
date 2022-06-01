@@ -1,36 +1,24 @@
 /**
- * Operadores: distinct, distinctUntilChanged y distinctUntilKeyChanged
- * https://rxjs.dev/api/operators/distinct
- * https://rxjs.dev/api/operators/distinctUntilChanged
- * https://rxjs.dev/api/operators/distinctUntilKeyChanged
+ * Operadores: debounceTime, throttleTime, auditTime y sampleTime
+ * https://rxjs.dev/api/operators/debounceTime
+ * https://rxjs.dev/api/operators/throttleTime
+ * https://rxjs.dev/api/operators/auditTime
+ * https://rxjs.dev/api/operators/sampleTime
  */
 
-import { of } from "rxjs";
+import { fromEvent } from "rxjs";
 import {
-  distinct,
-  distinctUntilChanged,
-  distinctUntilKeyChanged,
+  debounceTime,
+  throttleTime,
+  auditTime,
+  sampleTime,
 } from "rxjs/operators";
 
-// distinct
-const repeatedNumbers$ = of(1, 2, 1, 3, 4, 4, 2, 1).pipe(distinct());
-repeatedNumbers$.subscribe(console.log);
-
-// distinctUntilChanged
-const repeatedNumbersChanged$ = of(1, 2, 1, 3, 4, 4, 2).pipe(
-  distinctUntilChanged()
+const onClick$ = fromEvent(document, "click").pipe(
+  // debounceTime(4000),
+  // throttleTime(4000),
+  // auditTime(4000),
+  sampleTime(4000)
 );
-repeatedNumbersChanged$.subscribe(console.log);
 
-// distinctUntilKeyChanged
-const repeatedNumbersKeyChanged$ = of(
-  { k: 1 },
-  { k: 2 },
-  { k: 1 },
-  { k: 3 },
-  { k: 4 },
-  { k: 4 },
-  { k: 2 },
-  { k: 1 }
-).pipe(distinctUntilKeyChanged("k"));
-repeatedNumbersKeyChanged$.subscribe(console.log);
+onClick$.subscribe(console.log);
