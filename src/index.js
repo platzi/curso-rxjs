@@ -1,8 +1,11 @@
 /**
- * Operadores: pluck
- * https://rxjs.dev/api/operators/pluck
+ * Operadores: startWith y endWith
+ * https://rxjs.dev/api/operators/startWith
+ * https://rxjs.dev/api/operators/endWith
  */
-import { fromEvent } from "rxjs";
-import { pluck } from "rxjs/operators";
+import { of, from } from "rxjs";
+import { startWith, endWith } from "rxjs/operators";
 
-fromEvent(document, "mousemove").pipe(pluck("clientX")).subscribe(console.log);
+// const letters$ = of("A", "B", "C", "D").pipe(startWith("Z"));
+const letters$ = of("A", "B", "C", "D").pipe(endWith("Z"));
+letters$.subscribe(console.log);
