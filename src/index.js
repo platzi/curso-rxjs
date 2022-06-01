@@ -1,24 +1,34 @@
 /**
- * Operadores: debounceTime, throttleTime, auditTime y sampleTime
- * https://rxjs.dev/api/operators/debounceTime
- * https://rxjs.dev/api/operators/throttleTime
- * https://rxjs.dev/api/operators/auditTime
- * https://rxjs.dev/api/operators/sampleTime
+ * Operadores: mergeWith, mergeAll y mergeMap
+ * https://rxjs.dev/api/index/function/mergeWith
+ * https://rxjs.dev/api/index/function/mergeAll
+ * https://rxjs.dev/api/index/function/mergeMap
  */
 
-import { fromEvent } from "rxjs";
-import {
-  debounceTime,
-  throttleTime,
-  auditTime,
-  sampleTime,
-} from "rxjs/operators";
+import { from, fromEvent, interval } from "rxjs";
+import { mergeWith, map, mergeAll, mergeMap } from "rxjs/operators";
 
-const onClick$ = fromEvent(document, "click").pipe(
-  // debounceTime(4000),
-  // throttleTime(4000),
-  // auditTime(4000),
-  sampleTime(4000)
+// Aplicando mergeWith()
+// const onClick$ = fromEvent(document, "click").pipe(map((event) => event.type));
+// const onMouseMove$ = fromEvent(document, "mousemove").pipe(
+//   map((event) => event.type)
+// );
+
+// onClick$.subscribe(console.log);
+// onMouseMove$.subscribe(console.log);
+// const eventDocument$ = onMouseMove$.pipe(mergeWith(onClick$));
+
+// Aplicando mergeAll()
+// const onClick$ = fromEvent(document, "click");
+// const ordenSuperior$ = onClick$.pipe(map(() => interval(1000)));
+// const primerOrden$ = ordenSuperior$.pipe(mergeAll());
+
+// primerOrden$.subscribe(console.log);
+
+// Aplicando mergeMap()
+const letras$ = from(["A", "B", "C"]);
+const resultado$ = letras$.pipe(
+  mergeMap((letter) => interval(1000).pipe(map((second) => letter + second)))
 );
 
-onClick$.subscribe(console.log);
+resultado$.subscribe(console.log);
