@@ -1,11 +1,19 @@
 /**
- * Operadores: startWith y endWith
- * https://rxjs.dev/api/operators/startWith
- * https://rxjs.dev/api/operators/endWith
+ * Manejo de errores en RxJS
+ * https://rxjs.dev/api/operators/catchError
+ * https://rxjs.dev/api/operators/retry
  */
-import { of, from } from "rxjs";
-import { startWith, endWith } from "rxjs/operators";
+import { of, catchError, map, retry } from "rxjs";
 
-// const letters$ = of("A", "B", "C", "D").pipe(startWith("Z"));
-const letters$ = of("A", "B", "C", "D").pipe(endWith("Z"));
+const letters$ = of("A", "B", "C", "D", "E").pipe(
+  map((letter) => {
+    if (letter === "D") {
+      x = 4;
+    }
+    return letter;
+  }),
+  retry(2),
+  catchError((error) => of(error.message))
+);
+
 letters$.subscribe(console.log);
