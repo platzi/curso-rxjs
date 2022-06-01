@@ -1,40 +1,19 @@
 /**
- * AJAX en RxJS
- * https://rxjs.dev/api/ajax/ajax
+ * Fetch API en RxJS
+ * Operadores: fromFetch
+ * https://rxjs.dev/api/fetch/fromFetch
  */
-import { ajax } from "rxjs/ajax";
-import { of, map, catchError } from "rxjs";
+import { mergeMap, takeUntil, timer } from "rxjs";
+import { fromFetch } from "rxjs/fetch";
 
-// const ditto$ = ajax("https://pokeapi.co/api/v2/pokemon/itto").pipe(
-//   map((data) => console.log(data.response)),
-//   catchError((error) => {
-//     console.log("Error: ", error.message);
-//     return of(error);
-//   })
-// );
-
-// ditto$.subscribe(console.log);
-
-// https://pokeapi.co/api/v2/pokemon/ditto
-
-const postRequest$ = ajax({
-  url: "https://httpbin.org/delay/5",
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: {
-    message: "¿Dónde está Ditto?",
-  },
-}).pipe(
-  map((response) => {
-    console.log(response);
-    return response;
+// Petición HTTP con un retraso de 4 segundos.
+const url = "https://httpbin.org/delay/4";
+const ditto$ = fromFetch(url).pipe(
+  mergeMap((response) => {
+    return response.json();
   }),
-  catchError((error) => {
-    console.log("Error: ", error.message);
-    return of(error);
-  })
+  takeUntil(timer(6000)) // ⬅️ Puedes modificar la cantidad de milisegundos
+                         //   para abortar una petición HTTP enviada.
 );
 
-postRequest$.subscribe(console.log);
+ditto$.subscribe(console.log);
