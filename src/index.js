@@ -1,34 +1,15 @@
 /**
- * Operadores: mergeWith, mergeAll y mergeMap
- * https://rxjs.dev/api/index/function/mergeWith
- * https://rxjs.dev/api/index/function/mergeAll
- * https://rxjs.dev/api/index/function/mergeMap
+ * Operadores: takeUntil
+ * https://rxjs.dev/api/operators/takeUntil
  */
 
-import { from, fromEvent, interval } from "rxjs";
-import { mergeWith, map, mergeAll, mergeMap } from "rxjs/operators";
+import { fromEvent } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 
-// Aplicando mergeWith()
-// const onClick$ = fromEvent(document, "click").pipe(map((event) => event.type));
-// const onMouseMove$ = fromEvent(document, "mousemove").pipe(
-//   map((event) => event.type)
-// );
+const onMouseMove$ = fromEvent(document, "mousemove");
+const onMouseDown$ = fromEvent(document, "mousedown");
 
-// onClick$.subscribe(console.log);
-// onMouseMove$.subscribe(console.log);
-// const eventDocument$ = onMouseMove$.pipe(mergeWith(onClick$));
-
-// Aplicando mergeAll()
-// const onClick$ = fromEvent(document, "click");
-// const ordenSuperior$ = onClick$.pipe(map(() => interval(1000)));
-// const primerOrden$ = ordenSuperior$.pipe(mergeAll());
-
-// primerOrden$.subscribe(console.log);
-
-// Aplicando mergeMap()
-const letras$ = from(["A", "B", "C"]);
-const resultado$ = letras$.pipe(
-  mergeMap((letter) => interval(1000).pipe(map((second) => letter + second)))
-);
-
-resultado$.subscribe(console.log);
+// A través de takeUntil() definimos que cada vez que un evento es enviado por onMouseDown$
+// el observable sourceCompleted$ será completado. Y por consiguiente no emitirá más valores (línea 15).
+const sourceCompleted$ = onMouseMove$.pipe(takeUntil(onMouseDown$));
+sourceCompleted$.subscribe(console.log);
